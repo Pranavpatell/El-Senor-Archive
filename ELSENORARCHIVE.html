@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Senor Archives</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0.5rem;
+        }
+        body {
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url(back.png);
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+        }
+        .side-bar {
+            width: 15rem;
+            min-height: 100vh;
+            background-color: transparent;
+            backdrop-filter: blur(7px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 10px rgba(255,255,255,0.1);
+            padding: 1rem;
+        }
+        p {
+            font-size: 1.7rem;
+            font-family: 'Sofia', sans-serif;
+            font-weight: 100;
+            color: white;
+        }
+        .file-box {
+            margin-top: 1rem;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+        a {
+            color: #00ffcc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="side-bar">
+        <p>Pranav's Archives</p>
+        <div class="sidebar-content" id="file-container">
+            📂 Loading files...
+        </div>
+    </div>
+
+    <script>
+        fetch('filelist.json')
+            .then(res => res.json())
+            .then(files => {
+                const container = document.getElementById('file-container');
+                container.innerHTML = ''; // Clear loading text
+                files.forEach(file => {
+                    const div = document.createElement('div');
+                    div.classList.add('file-box');
+                    div.innerHTML = `
+                        <strong>${file.name}</strong><br>
+                        <a href="data/${file.file}" download>⬇️ Download</a>
+                    `;
+                    container.appendChild(div);
+                });
+            })
+            .catch(err => {
+                document.getElementById('file-container').innerText = "⚠️ Failed to load files.";
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
